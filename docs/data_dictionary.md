@@ -104,3 +104,15 @@ Unified analysis tables built by `src/build_master.py`: `master_ba_hour.parquet`
 - eGRID `PLCO2AN` is in short tons (verified); "other" fuel uses the national eGRID "other fossil" factor
   (under 0.4% of intensity).
 - See [AUDIT.md](AUDIT.md) for the full list.
+
+## Stage 1 inputs
+- `data/raw/rq2/territories_az.geojson`: HIFLD electric retail service territories intersecting Arizona (61 polygons;
+  `id` is the EIA utility number). Several small districts share identical generic polygons (2.31 square degrees),
+  so cell-to-utility links are approximate; `cell_utility_shares_{all,large}.parquet` hold the two mappings.
+
+## Revealed-preference inputs
+- `osm_datacenters_az.parquet`: 65 OpenStreetMap features tagged as data centers (fetched via Overpass; incomplete,
+  some mis-tagged businesses). `osm_substations_az.json`: 1,461 substations, voltage tag often missing.
+- `tracts_az_pop.parquet`: Census 2020 tract population, housing units and centroids (TIGERweb).
+- `fine_cells_features.parquet`: 10,563 cells of 0.05 degrees inside retail territories, with population,
+  substation distance, groundwater depth and coarse climate.

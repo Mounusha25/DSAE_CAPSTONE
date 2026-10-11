@@ -11,6 +11,8 @@ Arizona's AI Data Center Boom."** One framework for three linked decisions, usin
 | RQ1 When to run flexible workloads | LightGBM + temporal CNN forecasts of grid carbon intensity; simple scheduler | `forecast_v2.py`, `forecast_nn.py`, `schedule_eval.py` |
 | RQ2 Where to site | Transparent multi-criteria score over 0.25-degree cells; logistic / LightGBM + SHAP | `build_sites.py`, `rq2_siting.py` |
 | RQ3 Who pays (reliability) | Fixed-effects panel regression; PyMC hierarchical model | `rq3_model.py`, `bayes_rq3.py` |
+| Revealed-preference siting | Logistic model of OSM data-center cells on population and substations; feasibility screen | `revealed_preference.py`, `stage1_revealed.py` |
+| Stage 1 siting optimizer | ILP over cells, per-utility caps from reliability guardrail | `build_territories.py`, `stage1_optimizer.py` |
 | Water (extension) | Wet-bulb cooling water + generation-side water; carbon-vs-water frontier | `water_frontier.py`, `water_scarcity.py` |
 
 The user is working **alone**. The timeline, phases and role assignments in the original proposal are
@@ -77,9 +79,11 @@ Unified tables: `master_ba_hour.parquet` (BA x hour), `master_utility_year.parqu
 ## Deferred to the full scope (approved by the user, rough priority)
 1. EIA-860 plant cooling types; separate CSP (Solana) from PV in generation-side water.
 2. Marginal vs average emissions from EIA-930; test whether scheduling conclusions change.
-3. Revealed-preference siting from real data-center locations (OSM) with infrastructure features and
-   spatial cross-validation, replacing the constructed label.
-4. Stage 1 siting optimizer + sensitivity frontier (needs service-territory polygons).
+3. Revealed-preference siting: first version done (`revealed_preference.py`, `stage1_revealed.py`,
+   `docs/REVEALED_PREFERENCE.md`; 25 host cells, one metro). Still to do: interconnection-capacity and land
+   features, hyperscale facilities, other metros. Feasibility and suitability stay separate scores.
+4. Stage 1 siting optimizer: built (`stage1_optimizer.py`, `docs/STAGE1.md`) on HIFLD territory polygons. Still to do:
+   Stage 2 coupling, interconnection-capacity constraints, and a model of real data-center locations.
 5. Data extensions: EIA-930 back to 2018 and more BAs, interchange for consumption-based carbon, LBNL queue
    wait times from queue dates, more EIA-861 tables, ADWR Wells55, ACC docket text.
 6. A data-center-specific RQ3 exposure (Virginia / ERCOT event study) or an explicit power analysis.

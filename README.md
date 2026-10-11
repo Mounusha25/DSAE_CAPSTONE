@@ -14,7 +14,9 @@ One framework for three linked decisions about AI data centers in Arizona:
 [docs/data_dictionary.md](docs/data_dictionary.md) (every dataset, its coverage and cleaning rules),
 [docs/EDA.md](docs/EDA.md) (exploratory analysis) and
 [docs/regulatory_context_check.md](docs/regulatory_context_check.md) (fact check of policy claims) and
-[docs/AUDIT.md](docs/AUDIT.md) (self-audit: errors fixed, assumptions tested, what remains unverified).
+[docs/AUDIT.md](docs/AUDIT.md) (self-audit: errors fixed, assumptions tested, what remains unverified) and
+[docs/STAGE1.md](docs/STAGE1.md) (siting optimizer) and
+[docs/REVEALED_PREFERENCE.md](docs/REVEALED_PREFERENCE.md) (siting from real data-center locations).
 
 ## Layout
 ```
@@ -59,6 +61,15 @@ bash src/download_static.sh                       # eGRID, LBNL, EIA-861 files
 .venv/bin/python src/pull_groundwater.py && .venv/bin/python src/pull_wells_geo.py
 .venv/bin/python src/pull_adwr_gwsi.py
 .venv/bin/python src/build_sites.py && .venv/bin/python src/rq2_siting.py
+
+# Stage 1 siting optimizer
+.venv/bin/python src/build_territories.py        # cell -> serving utility (HIFLD polygons)
+.venv/bin/python src/stage1_optimizer.py
+
+# revealed-preference siting (real data-center locations)
+.venv/bin/python src/revealed_preference.py
+.venv/bin/python src/stage1_revealed.py
+.venv/bin/python src/make_revealed_figure.py
 
 # audit checks
 .venv/bin/python src/audit_checks.py > results/audit_checks.txt
